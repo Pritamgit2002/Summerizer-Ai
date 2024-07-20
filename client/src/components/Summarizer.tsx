@@ -29,7 +29,7 @@ export const Summarizer = () => {
     setLoading(true);
     try {
       const resParagraph = await fetch(
-        "https://summerize-server-1wsj.onrender.com/api/summarize/paragraph",
+        "https://summerizer-server.onrender.com/api/summarize/paragraph",
         {
           method: "POST",
           headers: {
