@@ -13,7 +13,9 @@ export function SignIn() {
   if (session && session.user) {
     return (
       <div className="flex items-center gap-2  ">
-        <p className=" text-white ">Hello, {session.user.name}</p>
+        <p className=" text-white hidden md:block ">
+          Hello, {session.user.name}
+        </p>
         <Dialog>
           <DialogTrigger>
             {session.user.image ? (

@@ -11,7 +11,7 @@ import { GoQuestion } from "react-icons/go";
 type Props = {};
 const POLLING_INTERVAL = 5000;
 
-const History = (props: Props) => {
+const History = () => {
   const { data: session, status } = useSession();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -47,32 +47,6 @@ const History = (props: Props) => {
 
     return () => clearInterval(intervalId);
   }, [userEmail]);
-
-  if (status === "loading") {
-    return (
-      <div className="w-72 min-h-screen h-full max-h-max flex flex-col items-center justify-center gap-y-2 bg-black text-white ">
-        <span className="text-2xl font-bold">
-          <BsExclamationTriangle />
-        </span>
-        <span className=" text-lg font-medium tracking-tight ">Loading...</span>
-      </div>
-    );
-  }
-
-  if (status === "unauthenticated") {
-    return (
-      <div className="w-72 min-h-screen h-full max-h-max flex flex-col items-center justify-center gap-y-2 bg-black text-white ">
-        <span className="text-2xl font-bold">
-          <BsExclamationTriangle />
-        </span>
-        <span className=" text-lg font-medium tracking-tight ">
-          Please log in to see your history.
-        </span>
-        <SignIn />
-      </div>
-    );
-  }
-
   const handleCopyPrompt = async (index: number) => {
     try {
       const promptText = prompts[index];
@@ -87,8 +61,43 @@ const History = (props: Props) => {
     }
   };
 
+  if (status === "loading") {
+    return (
+      <div className="w-56 md:w-64 lg:w-72 min-h-screen h-full max-h-max flex flex-col items-center justify-center gap-y-2 bg-black text-white  ">
+        <div className="h-16 flex items-center pl-2 bg-[#111010]">
+          <span className="text-white text-2xl font-semibold tracking-wide">
+            History
+          </span>
+        </div>
+        <span className="text-2xl font-bold">
+          <BsExclamationTriangle />
+        </span>
+        <span className=" text-lg font-medium tracking-tight ">Loading...</span>
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="w-56 md:w-64 lg:w-72 min-h-screen h-full max-h-max flex flex-col items-center justify-start gap-y-2 bg-black text-white ">
+        <div className=" w-full h-16 flex items-center pl-3 mb-32 bg-[#111010]">
+          <span className="text-white text-2xl font-semibold tracking-wide">
+            History
+          </span>
+        </div>
+        <span className="text-2xl font-bold">
+          <BsExclamationTriangle />
+        </span>
+        <span className=" text-lg font-medium tracking-tight text-center ">
+          Please log in to see your history.
+        </span>
+        <SignIn />
+      </div>
+    );
+  }
+
   return (
-    <div className="w-72 h-full max-h-max bg-black text-white px-2">
+    <div className="w-56 md:w-64 lg:w-72 h-full min-h-screen overflow-y-auto bg-black text-white px-2">
       <div className="h-16 flex items-center pl-2 bg-[#111010]">
         <span className="text-white text-2xl font-semibold tracking-wide">
           History
@@ -107,14 +116,19 @@ const History = (props: Props) => {
             </div>
             <Tooltip
               anchorSelect={`#tooltip-anchor-${index}`}
-              content="Click to copy prompt."
+              content="Click to copy prompt"
               place="right"
-              style={{ backgroundColor: "#fff", color: "#000" }}
+              style={{
+                backgroundColor: "#fff",
+                color: "#000",
+                zIndex: 100,
+                fontSize: "14px",
+              }}
             />
           </React.Fragment>
         ))
       ) : (
-        <div className="w-72 min-h-screen h-full max-h-max flex flex-col items-center justify-center gap-y-2 bg-black text-white ">
+        <div className="w-56 md:w-64 lg:w-72 min-h-screen h-full max-h-max flex flex-col items-center justify-center gap-y-2 bg-black text-white ">
           <span className="">
             <GoQuestion />
           </span>

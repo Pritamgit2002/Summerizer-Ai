@@ -9,7 +9,7 @@ const port = 8080;
 app.use(cors());
 app.use(bodyParser.json());
 
-const genAI = new GoogleGenerativeAI("AIzaSyB1QASZwKV5caiwSqh3-9_ux8HoVGf4qD8");
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 async function runPrompt(prompt, task) {

@@ -101,7 +101,7 @@ export const Summarizer = () => {
         )
         .catch((err) => console.error("Could not copy text: ", err));
     } else {
-      toast.error("No text to copy.");
+      toast.error("No summary generated to copy.");
     }
   };
 
@@ -130,15 +130,15 @@ export const Summarizer = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-start pt-6 px-12 gap-x-16 gap-y-6 ">
-      <div className=" w-max ">
+    <div className="w-[425px] md:w-[500px] lg:w-[620px] h-max flex flex-col items-center justify-start pt-6 px-6 gap-x-16 gap-y-6  ">
+      <div className="  ">
         <textarea
           value={prompt}
           onChange={handlePromptChange}
           placeholder="Enter text to analyze and summarize..."
           rows={10}
           cols={65}
-          className="border-2 border-black/50 rounded-lg p-3 mb-4"
+          className="border-2 border-black/50 rounded-lg p-3 mb-4 w-full"
         />
         <div className="flex gap-x-4">
           <button
@@ -149,9 +149,11 @@ export const Summarizer = () => {
           </button>
         </div>
       </div>
-      <div>
-        <div className="w-[628px] flex items-center justify-between text-2xl font-semibold text-neutral-100 bg-black p-3 rounded-t-xl ">
-          <span>Generated Text</span>
+      <div className=" w-full ">
+        <div className=" w-full flex items-center justify-between text-xl md:text-2xl font-semibold text-neutral-100 bg-black p-3 rounded-t-xl ">
+          <span className="text-2xl md:text-3xl font-bold tracking-tight md:tracking-normal  ">
+            Generated Text
+          </span>
           <div className="flex gap-x-4">
             <span
               className="text-neutral-100 hover:text-white cursor-pointer active:scale-95 duration-300 ease-out"
@@ -175,7 +177,7 @@ export const Summarizer = () => {
         </div>
         <Tabs
           defaultValue="paragraph"
-          className=" border-x-4 border-b-4 border-black rounded-b-xl w-[628px]"
+          className=" border-x-4 border-b-4 border-black rounded-b-xl w-full"
           onValueChange={(value) => setActiveTab(value)}
         >
           <TabsList className=" w-full flex items-center justify-center ">
@@ -196,7 +198,9 @@ export const Summarizer = () => {
                 <ReactMarkdown>{paragraphSummary}</ReactMarkdown>
               ) : (
                 <div className="flex justify-center items-center w-full">
-                  <h3 className="text-3xl font-bold">Enter Text</h3>
+                  <h3 className=" text-2xl md:text-3xl font-bold">
+                    Enter Text
+                  </h3>
                 </div>
               )}
             </div>
