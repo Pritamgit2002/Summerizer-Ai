@@ -1,4 +1,5 @@
 "use client";
+import toast, { Toaster } from "react-hot-toast";
 import { GrPowerReset } from "react-icons/gr";
 import { useState, ChangeEvent } from "react";
 import { FaCopy, FaFileDownload } from "react-icons/fa";
@@ -13,7 +14,7 @@ export const Summarizer = () => {
   const [paragraphSummary, setParagraphSummary] = useState<string>("");
   const [bulletPointsSummary, setBulletPointsSummary] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<string>("account");
+  const [activeTab, setActiveTab] = useState<string>("paragraph");
 
   const handlePromptChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
@@ -21,7 +22,8 @@ export const Summarizer = () => {
 
   const fetchResponse = async () => {
     if (!prompt) {
-      alert("Enter Text to Summarize");
+      // alert("Enter Text to Summarize");
+      toast.error("Enter Text to Summarize");
       return;
     }
     setLoading(true);
@@ -90,20 +92,22 @@ export const Summarizer = () => {
 
   const handleCopyText = () => {
     const textToCopy =
-      activeTab === "account" ? paragraphSummary : bulletPointsSummary;
+      activeTab === "paragraph" ? paragraphSummary : bulletPointsSummary;
     if (textToCopy && textToCopy !== "Fetching summary...") {
       navigator.clipboard
         .writeText(textToCopy)
-        .then(() => alert(`Text copied to clipboard of ${activeTab} summary.`))
+        .then(() =>
+          toast.success(`Text copied to clipboard of ${activeTab} summary.`)
+        )
         .catch((err) => console.error("Could not copy text: ", err));
     } else {
-      alert("No text to copy.");
+      toast.error("No text to copy.");
     }
   };
 
   const handleDownloadTextFile = () => {
     const textToDownload =
-      activeTab === "account" ? paragraphSummary : bulletPointsSummary;
+      activeTab === "paragraph" ? paragraphSummary : bulletPointsSummary;
     if (textToDownload && textToDownload !== "Fetching summary...") {
       const blob = new Blob([textToDownload], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
@@ -114,9 +118,9 @@ export const Summarizer = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      alert(`Text Downloaded to summary.${activeTab}`);
+      toast.success(`Text Downloaded to summary.${activeTab}`);
     } else {
-      alert("No summary generated to download.");
+      toast.error("No summary generated to download.");
     }
   };
 
@@ -139,7 +143,7 @@ export const Summarizer = () => {
         <div className="flex gap-x-4">
           <button
             onClick={fetchResponse}
-            className=" w-full text-xl font-semibold p-2 rounded-md bg-neutral-900 text-neutral-100/70 hover:text-white hover:bg-black transition-all duration-300 ease-out"
+            className=" w-full text-xl font-semibold p-2 rounded-md bg-black/80 text-neutral-100/85 hover:text-white hover:bg-black transition-all duration-300 ease-out active:scale-95  "
           >
             Summarize
           </button>
@@ -170,19 +174,19 @@ export const Summarizer = () => {
           </div>
         </div>
         <Tabs
-          defaultValue="account"
+          defaultValue="paragraph"
           className=" border-x-4 border-b-4 border-black rounded-b-xl w-[628px]"
           onValueChange={(value) => setActiveTab(value)}
         >
           <TabsList className=" w-full flex items-center justify-center ">
-            <TabsTrigger value="account" className=" w-full ">
+            <TabsTrigger value="paragraph" className=" w-full ">
               Paragraph
             </TabsTrigger>
-            <TabsTrigger value="password" className=" w-full ">
+            <TabsTrigger value="points" className=" w-full ">
               Points
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="account" className="">
+          <TabsContent value="paragraph" className="">
             <div className="w-full h-80 flex flex-col items-start justify-start gap-y-2 bg-[#2F2F2F] p-3 border-t-4 border-black rounded-b-xl  text-white overflow-y-auto ">
               {loading ? (
                 <div className="flex justify-center items-center w-full">
@@ -197,7 +201,7 @@ export const Summarizer = () => {
               )}
             </div>
           </TabsContent>
-          <TabsContent value="password" className=" ">
+          <TabsContent value="points" className=" ">
             <div className="w-full h-80 flex flex-col items-start justify-start gap-y-2 bg-[#2F2F2F] p-3 border-t-4 border-black rounded-b-xl text-white overflow-y-auto ">
               {loading ? (
                 <div className="flex justify-center items-center w-full">
