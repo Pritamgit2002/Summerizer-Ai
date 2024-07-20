@@ -42,11 +42,11 @@ const Navbar = () => {
 
   const fetchPrompts = async () => {
     if (userEmail) {
-      console.log("Fetching prompts for email:", userEmail);
+      // console.log("Fetching prompts for email:", userEmail);
 
       try {
         const getPromptsResults = await getPrompts({ userEmail: userEmail });
-        console.log("Prompts received:", getPromptsResults);
+        // console.log("Prompts received:", getPromptsResults);
 
         if (getPromptsResults.success) {
           setPrompts(getPromptsResults.text || []);
