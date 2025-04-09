@@ -11,7 +11,7 @@
 
 6. Every edge case is handled and tested.
 
-7. More features will be added soon.
+7. More feature will be added soon.
 
 https://github.com/user-attachments/assets/664a8620-7ee2-4ba4-b951-bdeb9b650541
-
+ 
