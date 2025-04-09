@@ -1,6 +1,6 @@
 'use server'
 import { mongodb } from '@/utils/mongodb';
-import { IPrompt, userCollectionName } from '@/models/user';
+import { userCollectionName } from '@/models/user';
 
 type Input = {
     userEmail: string;
@@ -9,6 +9,8 @@ type Input = {
 type Output = {
     success: boolean;
     text?: string[];
+    generatedParagraphs?: string[];
+    generatedPoints?: string[];
     message: string;
     name?: string;
     email?: string;
@@ -16,27 +18,19 @@ type Output = {
 }
 
 export async function getPrompts({ userEmail }: Input): Promise<Output> {
-    console.log("getPrompts called");
+
     try {
         await mongodb.connect();
-        const collection = mongodb.collection(userCollectionName);
-
-        // Find the user by email
-        const user = await collection.findOne({ email: userEmail });
-
-        if (!user) {
+        const user = await mongodb.collection(userCollectionName).findOne({ email: userEmail });
+        console.log("User document found:", user);
+        if(!user){
             return { success: false, message: 'User not found' };
         }
-
-
-        // Ensure prompts is an array and extract the text from each prompt
-        const texts = Array.isArray(user.prompt) ? user.prompt : [];
-
-        console.log("User document found:", texts);
-
         return {
             success: true,
-            text: texts,
+            text: user.prompt,
+            generatedParagraphs:user.paragraphs,
+            generatedPoints: user.points,
             message: 'Prompts retrieved successfully',
             name: user.name,
             email: user.email,

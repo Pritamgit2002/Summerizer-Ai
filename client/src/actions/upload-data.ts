@@ -2,11 +2,14 @@
 
 import { mongodb } from '@/utils/mongodb';
 import { IPrompt, IUser, userCollectionName } from '@/models/user';
+import { nanoid } from 'nanoid';
 
 type Input = {
     userEmail: string;
-    // prompts: IPrompt[];
-    prompts: IPrompt["text"];
+    id:string;
+    prompts: IPrompt["prompt"];
+    paragraphs:IPrompt["paragraphs"];
+    points:IPrompt["points"]
 }
 
 type Output = {
@@ -14,14 +17,14 @@ type Output = {
     message: string;
 }
 
-export async function storeQuestion(data: Input): Promise<Output> {
+export async function addPromptData(data: Input): Promise<Output> {
     try {
         await mongodb.connect();
         const collection = mongodb.collection(userCollectionName);
 
         const user = await collection.findOneAndUpdate(
             { email: data.userEmail },
-            { $addToSet: { prompt: data.prompts } },
+            { $addToSet: { id: nanoid ,prompt: data.prompts, paragraphs: data.paragraphs, points: data.points } },
         );
 
         if (!user) {

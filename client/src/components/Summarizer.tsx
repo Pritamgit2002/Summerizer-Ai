@@ -6,7 +6,7 @@ import { FaCopy, FaFileDownload } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { useSession } from "next-auth/react";
-import { storeQuestion } from "@/actions/upload-data";
+import { addPromptData } from "@/actions/upload-data";
 
 export const Summarizer = () => {
   const { data: session } = useSession();
@@ -68,16 +68,13 @@ export const Summarizer = () => {
         return;
       }
 
-      const storeQuestionResult = await storeQuestion({
-        prompts: {
-          text: prompt,
-          // paragraphs: dataParagraph.summary,
-          // points: dataBulletPoints.summary,
-        }["text"],
-
-        userEmail,
-      });
-      if (storeQuestionResult.success) {
+      const storePromptResult = await addPromptData({
+        userEmail:userEmail,
+        prompts: prompt,
+        paragraphs: dataParagraph,
+        points: dataBulletPoints,
+      })
+      if (storePromptResult.success) {
         console.log("Prompt saved successfully");
       } else {
         console.error("Failed to save prompt");

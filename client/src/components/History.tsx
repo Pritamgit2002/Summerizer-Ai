@@ -17,18 +17,20 @@ const History = () => {
   const [email, setEmail] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
   const [prompts, setPrompts] = useState<string[]>([]);
+  const [paragraphs, setParagraphs] = useState<string[]>([]);
+  const [points, setPoints] = useState<string[]>([]);
   const userEmail = session?.user?.email;
 
   const fetchPrompts = async () => {
     if (userEmail) {
-      // console.log("Fetching prompts for email:", userEmail);
 
       try {
         const getPromptsResults = await getPrompts({ userEmail: userEmail });
-        // console.log("Prompts received:", getPromptsResults);
 
         if (getPromptsResults.success) {
           setPrompts(getPromptsResults.text || []);
+          setParagraphs(getPromptsResults.generatedParagraphs || []);
+          setPoints(getPromptsResults.generatedPoints || []);
           setName(getPromptsResults.name || "");
           setEmail(getPromptsResults.email || "");
           setAvatar(getPromptsResults.avatar || "");
@@ -51,11 +53,9 @@ const History = () => {
     try {
       const promptText = prompts[index];
       await navigator.clipboard.writeText(promptText);
-      // alert("Prompt copied to clipboard.");
       toast.success("Prompt copied to clipboard.");
       console.log("Successfully copied prompt to clipboard.");
     } catch (error) {
-      // alert("Failed to copy text");
       toast.error("Failed to copy Prompt");
       console.error("Failed to copy text:", error);
     }
